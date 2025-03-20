@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}
+ form
+{% endblock title %}
+ Contact
+{% block content %}
+<h1 class = "text-center alert alert-dark"> Student Leave System</h1>
+
+
+
+
+<div class="container alert alert-dark">
+    <div class="row">
+        <div class="col-10 mx-auto">
+
+            {% if messages %}
+            <div id="timer">
+
+            
+                {% for message in messages   %}
+                        <!-- <h1 class = "text-bg-danger mx-auto"> {{message}}</h1> -->
+                    <div class="alert alert-{{message.tags}} alert-dismissible fade show mx-auto" role="alert">
+                        <strong>Message</strong> {{message}}.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>        
+            {% endif %}
+
+            <!-- <form method="post" action="{% url 'form' %}"> -->
+            <!-- <form method="post" and enctype="multipart/form-data" action="{% url 'form' %}"> -->
+            <form method="post" enctype="multipart/form-data" action="{% url 'form' %}">
+            <!-- <form method="post" and enctype="multipart/form-data" action="{% url 'form' %}"> -->
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="rollNumber" class="form-label">Roll Number</label>
+                    <input type="number" name="rollNumber" class="form-control" id="rollNumber" required maxlength="6" minlength="6" placeholder="Enter 6-digit Roll Number">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="fullName" class="form-label">Full Name</label>
+                    <input type="text" name="fullName" class="form-control" id="fullName" placeholder="Enter Full Name" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="faculty" class="form-label">Faculty</label>
+                    <select name="faculty" class="form-select" id="faculty" required>
+                        <option value="" disabled selected>Select Faculty</option>
+                        <option>Computer Engineering</option>
+                        <option>Electronics and Communication Engineering</option>
+                        <option>Architecture</option>
+                        <option>Electrical Engineering</option>
+                        <option>Civil Engineering</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="semester" class="form-label">Semester</label>
+                    <input type="number" name="semester" class="form-control" id="semester" placeholder="Enter Semester" required min="1" max="10">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="startDate" class="form-label">Leave Start Date</label>
+                    <input type="date" name="startDate" class="form-control" id="startDate" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="endDate" class="form-label">Leave End Date</label>
+                    <input type="date" name="endDate" class="form-control" id="endDate" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="leaveType" class="form-label">Type of Leave</label>
+                    <select name="leaveType" class="form-select" id="leaveType" required>
+                        <option value="" disabled selected>Select Type of Leave</option>
+                        <option>Medical Leave</option>
+                        <option>Personal Leave</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="reason" class="form-label">Reason for Leave</label>
+                    <textarea name="reason" class="form-control" id="reason" rows="3" placeholder="Provide reason for leave" required></textarea>
+                </div>
+                
+                <!-- <div class="mb-3">
+                    <label for="document" class="form-label">Supporting Documents (if any)</label>
+                    <input type="file" name="document" class="form-control" id="document">
+                </div> -->
+                <div class="mb-3">
+                    <label for="document" class="form-label">Supporting Documents (if any)</label>
+                    <input type="file" name="document" class="form-control" id="document" accept="application/pdf,image/*">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="guardianContact" class="form-label">Parent/Guardian Contact</label>
+                    <input type="text" name="guardianContact" class="form-control" id="guardianContact" placeholder="Enter Parent/Guardian Contact" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="studentContact" class="form-label">Your Contact Number</label>
+                    <input type="text" name="studentContact" class="form-control" id="studentContact" placeholder="Enter Your Contact Number" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="studentEmail" class="form-label">Your Email</label>
+                    <input type="email" name="studentEmail" class="form-control" id="studentEmail" placeholder="Enter Your Email" required>
+                </div>
+                
+                
+                <button type="submit" class="btn btn-primary">Submit</button>
+                
+            </form>
+            
+              
+        </div>
+    </div>
+</div>
+
+<script>
+    setTimeout(function(){
+        var time = document.getElementById("timer")
+        if (time) {
+            time.style.display = 'none';            
+        }
+    },3000) 
+</script>
+{% endblock content %}
+
+
+
+
+   
+
+
+
+
+

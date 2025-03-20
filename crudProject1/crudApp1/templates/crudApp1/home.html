@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block title %}
+  Home
+{% endblock title %}
+
+{% block content %}
+{% if messages %}
+    <div id="timer">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show mx-auto" role="alert">
+                <strong>Message:</strong> {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<h1 class="text-center alert alert-dark">Student Information</h1>
+
+<div class="container">
+  <div class="row">
+    <div class="col-10 mx-auto">
+      <table class="table table-dark table-striped">
+        <thead>
+          <a href="{% url 'clear_items' %}"><button class="btn btn-info">Clear Items</button></a>
+
+          <tr>
+            <th scope="col">S.No.</th>
+            <th scope="col">Roll Number</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Faculty</th>
+            <th scope="col">Semester</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">End Date</th>
+            <th scope="col">Reason</th>
+            <th scope="col">Operation</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for leave in student_leaves %}
+          <tr>
+            <th scope="row">{{ forloop.counter }}</th>  
+
+            <td>{{ leave.roll_number }}</td>
+            <td>{{ leave.full_name }}</td>
+            <td>{{ leave.faculty }}</td>
+            <td>{{ leave.semester }}</td>
+            <td>{{ leave.start_date }}</td>
+            <td>{{ leave.end_date }}</td>
+            <td title="{{ leave.reason }}">{{ leave.reason|truncatewords:5 }}</td> <!-- Shortened display -->
+            <td class="d-flex justify-content-center align-items-center" style="height: 100%;">
+              <a href="{% url 'edit' leave.id %}">
+                <button class="btn btn-primary me-2">
+                    <i class="fa-solid fa-pen-to-square"></i> Edit
+                </button>
+              </a>
+              <a href="{% url 'delete_data' leave.id %}">
+                <button class="btn btn-danger">
+                  <i class="fa-solid fa-trash"></i> Delete
+                </button>
+              </a>
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="9" class="text-center">No leave records found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+        <!-- {% if student_leaves|length < 1 %}
+          data not found
+            
+          {% endif %}-->
+    </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-end">
+  <a href="{% url 'recycle' %}" class="mx-5 px-10">
+    <button class="btn btn-warning">
+      <i class="fa-solid fa-recycle"></i> Restore
+    </button>
+  </a>
+</div>
+{% endblock content %}

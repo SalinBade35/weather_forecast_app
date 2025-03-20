@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}
+  Home
+{% endblock title %}
+
+{% block content %}
+
+<h1 class="text-center alert alert-danger">Deleted Information</h1>  
+
+{% if messages %}
+<div id="timer">
+    {% for message in messages   %}
+            <!-- <h1 class = "text-bg-danger mx-auto"> {{message}}</h1> -->
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show mx-auto" role="alert">
+            <strong>Message</strong> {{message}}.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+</div>        
+{% endif %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-10 mx-auto">
+        <a href="{% url 'restore_all' %}">
+            <button class="btn btn-success">Restore All Items</button>
+          </a>
+      <!-- <table class="table table-success  table-striped"> -->
+        <table class="table table-danger table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">S.No.</th>
+                    <th scope="col">Roll Number</th>
+                    <th scope="col">Full Name</th>
+                    <th scope="col">Faculty</th>
+                    <th scope="col">Semester</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Reason</th>
+                    <th scope="col">Operation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for leave in data %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ leave.roll_number }}</td>
+                    <td>{{ leave.full_name }}</td>
+                    <td>{{ leave.faculty }}</td>
+                    <td>{{ leave.semester }}</td>
+                    <td>{{ leave.start_date }}</td>
+                    <td>{{ leave.end_date }}</td>
+                    <td>{{ leave.reason }}</td>
+                    <td class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                        <!-- Button trigger modal with unique ID -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#restoreModal{{ leave.id }}">
+                            Restore
+                        </button>
+        
+                        <!-- Modal with dynamic ID for each leave record -->
+                        <div class="modal fade" id="restoreModal{{ leave.id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ leave.id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5 alert alert-success" id="exampleModalLabel{{ leave.id }}">Restore Deleted Information</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Do You Want To Restore Data for ? <br> name: {{ leave.full_name }} <br>roll no.: {{ leave.roll_number}}
+                                    </div>
+                                    <form action="{% url 'restore' leave.id %}" method="POST">
+                                        {% csrf_token %}
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Restore</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center">No leave records found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+  </div>
+</div>
+
+<script>
+    const myModal = document.getElementById('myModal')
+const myInput = document.getElementById('myInput')
+
+myModal.addEventListener('shown.bs.modal', () => {
+  myInput.focus()
+})
+</script>
+<script>
+    setTimeout(function(){
+        var time = document.getElementById("timer")
+        if (time) {
+            time.style.display = 'none';            
+        }
+    },3000) 
+</script>
+
+{% endblock content %}
